@@ -12,30 +12,85 @@ $(document).on('ready', function() {
   // }
   // google.maps.event.addDomListener(window, 'load', initialize);
 
-
-  var map;
+  // ------- create lat lng loctions ------- //
+  var edgeWater = new google.maps.LatLng(39.0553263,-108.5576635)
   var kcbc = new google.maps.LatLng(39.0853043,-108.5522896)
+
+  var locationsArray = [edgeWater, kcbc]
+
+  // --------- create map options ----------- //
+  var map;
   var myOptions = {
-    zoom: 9,
-    mapTypeId:google.maps.MapTypeId.ROADMAP,
-    center: kcbc
+    zoom: 12,
+    mapTypeId: google.maps.MapTypeId.ROADMAP,
+    center: locationsArray[0]
   };
 
-
+  // --------- create map ------ //
   var map = new google.maps.Map(document.getElementById("map"), myOptions);
 
-  var marker = new google.maps.Marker({
-  position:kcbc,
-  animation:google.maps.Animation.BOUNCE
-  });
 
-  marker.setMap(map);
+  //------- create markers --------//
+  var markerArray = [];
 
-  var infowindow = new google.maps.InfoWindow({
-  content:"KCBC!"
-  });
+  function createMarker(locationArray){
+    console.log(locationArray)
+    for (var i = 0; i < locationArray.length; i++) {
+      markerArray.push(new google.maps.Marker({
+        position: locationArray[i],
+      })
+    );
+  };
+      return markerArray;
+  };
 
-  infowindow.open(map, marker);
+  // var marker = new google.maps.Marker({
+  // position: kcbc,
+  // });
+  // var ewMarker = new google.maps.Marker({
+  //   position: edgeWater,
+  // });
 
+  function setMarker(markerArray){
+    for (var i = 0; i < markerArray.length; i++) {
+      console.log(markerArray)
+       markerArray[i].setMap(map);
+    };
+  };
+
+  setMarker(createMarker(locationsArray));
+
+
+  // marker.setMap(map);
+  // ewMarker.setMap(map);
+
+
+
+
+
+  // ----------- set popup window for marker -------//
+  // var infowindow = new google.maps.InfoWindow({
+  // content:"KCBC!"
+  // });
+
+  // infowindow.open(map, marker);
+
+
+// ---------- lat long pop up on click ------------- //
+  // google.maps.event.addListener(map, "click", function(event){
+  //   placeMarker(event.latLng)
+  // });
+
+  // function placeMarker(location){
+  //   var marker = new google.maps.Marker({
+  //     position: location,
+  //     map: map
+  //   });
+  //   var infoWindow = new google.maps.InfoWindow({
+  //     content: "Latitude: "+ location.lat() +
+  //     '<br>Longitude: ' + location.lng()
+  //   });
+  //   infoWindow.open(map,marker)
+  // }
 
 });
