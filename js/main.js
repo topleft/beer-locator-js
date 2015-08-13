@@ -30,43 +30,83 @@ $(document).on('ready', function() {
   var map = new google.maps.Map(document.getElementById("map"), myOptions);
 
 
+  // ---------- add search places box ---------- //
+
+  var input = document.getElementById("pac-input");
+  var searchBox = new google.maps.places.SearchBox(input);
+  map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+
+  map.addListener("bounds_changed", function(){
+    searchBox.setBounds(map.getBounds());
+  });
+
+  var markers = [];
+
+  searchBox.addListener('places_changed', function(){
+    var places = searchBox.getPlaces();
+
+    if (places.length == 0){
+      return;
+    }
+    markers.forEach(function(marker){
+      marker.setMap(null);
+    });
+
+    markers = [];
+
+    //For each get the icon name and location
+    var bounds = new google.maps.LatLngBounds();
+    places.forEach(function(place){
+      var icon = {
+        url: place.icon,
+        size: new google.maps.Size(71, 71),
+        origin: new google.maps.Point(0, 0),
+        anchor: new google.maps.Point(17, 34),
+        scaledSize: new google.maps.Size(25, 25)
+      }
+
+      markers.push(new google.maps.Marker({
+        map: map,
+        // icon: icon,
+        title: place.name,
+        position: place.geometry.location
+      }));
+
+    });
+
+  });
+
+  // Create a marker for each place.
+
+
+
+
+
+
+
   //------- create markers --------//
-  var markerArray = [];
+  // var markerArray = [];
 
-  function createMarker(locationArray){
-    console.log(locationArray)
-    for (var i = 0; i < locationArray.length; i++) {
-      markerArray.push(new google.maps.Marker({
-        position: locationArray[i],
-      })
-    );
-  };
-      return markerArray;
-  };
-
-  // var marker = new google.maps.Marker({
-  // position: kcbc,
-  // });
-  // var ewMarker = new google.maps.Marker({
-  //   position: edgeWater,
-  // });
-
-  function setMarker(markerArray){
-    for (var i = 0; i < markerArray.length; i++) {
-      console.log(markerArray)
-       markerArray[i].setMap(map);
-    };
-  };
-
-  setMarker(createMarker(locationsArray));
+  // function createMarker(locationArray){
+  //   console.log(locationArray)
+  //   for (var i = 0; i < locationArray.length; i++) {
+  //     markerArray.push(new google.maps.Marker({
+  //       position: locationArray[i],
+  //     })
+  //   );
+  // };
+  //     return markerArray;
+  // };
 
 
-  // marker.setMap(map);
-  // ewMarker.setMap(map);
+  // function setMarker(markerArray){
+  //   for (var i = 0; i < markerArray.length; i++) {
+  //     console.log(markerArray)
+  //      markerArray[i].setMap(map);
+  //   };
+  // };
 
-
-
-
+  // setMarker(createMarker(locationsArray));
 
   // ----------- set popup window for marker -------//
   // var infowindow = new google.maps.InfoWindow({
