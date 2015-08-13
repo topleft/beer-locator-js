@@ -41,7 +41,7 @@ $(document).on("ready", function(){
               createMarker(place, map),
               'click',
                 function() {
-                  infowindow.setContent(place.name);
+                  infowindow.setContent(place.name, place.postal_code);
                   infowindow.open(map, this);
                 }
           );
@@ -49,8 +49,29 @@ $(document).on("ready", function(){
       });
     };
   }
-
   populateMap(hasKannahArray)
+
+
+  var geocoder;
+
+  function codeAddress() {
+    geocoder = new google.maps.Geocoder();
+    var address = document.getElementById("pac-input").value;
+    geocoder.geocode( { 'address': address}, function(results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+        map.setCenter(results[0].geometry.location);
+        }
+      else {
+        alert("Geocode was not successful for the following reason: " + status);
+      }
+    });
+  };
+
+  $("form").on("submit", function(e){
+    e.preventDefault();
+    codeAddress();
+  });
+
 
 
 
