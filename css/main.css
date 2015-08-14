@@ -1,5 +1,15 @@
 /* add custom styles */
 
+body {
+  background-image: url("http://www.banderastone.com/sitebuilder/images/cardboardBrown_background-998x823.jpg");
+  background-repeat: no-repeat;
+  background-size: 100%;
+}
+
+#main-logo {
+  border-radius: 25rem;
+}
+
 .admin-toggle{
   display: none;
 }
@@ -7,3 +17,20 @@
 .find-beer-toggle {
   display: none;
 }
+
+.btn-primary{
+  background-color: #BF2519;
+}
+
+.big-btn {
+  width:80%;
+  margin: auto;
+  margin-top: 3rem;
+  padding: 7rem;
+  font-size: 3rem;
+}
+
+.center {
+  text-align: center;
+}
+

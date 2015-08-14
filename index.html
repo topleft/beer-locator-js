@@ -5,6 +5,7 @@
     <title>Beer Finder</title>
 
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/paper/bootstrap.min.css" rel="stylesheet">
 
     <link rel="stylesheet" type="text/css" href="css/main.css">
   </head>
@@ -14,12 +15,18 @@
     <br>
 
     <div class="container">
-      <div>
-        <img src="http://thefullpint.com/wp-content/uploads/2013/10/Kannah-Creek-Brewing.png">
-      </div>
-      <div>
-        <button id="admin">Add Locations</button>
-        <button id="find-beer">Find Beer</button>
+      <div class="row">
+        <div class="col-md-6">
+          <img id="main-logo" src="http://thefullpint.com/wp-content/uploads/2013/10/Kannah-Creek-Brewing.png">
+        </div>
+        <div class="col-md-6">
+          <div class="col-md-12">
+            <button class="btn btn-primary btn-lg big-btn" id="admin">Add Locations</button>
+          </div>
+          <div class="col-md-12">
+            <button class="btn btn-warning btn-lg big-btn" id="find-beer">Find Beer</button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -28,15 +35,24 @@
 
 <!-- admin map -->
 
-    <div id="admin-container" class="admin-toggle">
-      <form class="form-inline">
-        <div class="form-group">
-          <label>Zip Code</label>
-          <input id="admin-input" class="controls form-control" type="text" placeholder="enter zip...">
+    <div id="admin-container" class="admin-toggle container">
+      <div class="row">
+        <form class="form-inline">
+          <div class="form-group">
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <input id="admin-input" class="controls form-control" type="text" placeholder="enter location...">
+                <button id="add-location" type="submit" class="btn btn-default">Add Location</button>
+              </div>
+            </div>
+          </div>
+        </form>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="center" id="admin-map" style="width:1000px;height:500px;"></div>
+          </div>
         </div>
-        <button id="add-location" type="submit" class="btn btn-default">Add Location</button>
-      </form>
-      <div id="admin-map" style="width:1000px;height:500px;"></div>
+      </div>
     </div>
 
 
