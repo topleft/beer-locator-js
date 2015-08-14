@@ -18,6 +18,7 @@ $(document).on("ready", function(){
 // Kannah Creek Brewing Company, Place ID: ChIJ81qEAEwcR4cRe2NQBSo1Vww
 // Edgewater Brewery, Place ID: ChIJI4bjvHAcR4cRNOwP0kGsGeU
   var hasKannahArray = ["ChIJI4bjvHAcR4cRNOwP0kGsGeU","ChIJ81qEAEwcR4cRe2NQBSo1Vww"]
+  var hasKannahObject = {};
 
   // -----apply placesID's to map -------- //
   var infowindow = new google.maps.InfoWindow();
@@ -49,6 +50,7 @@ $(document).on("ready", function(){
       });
     };
   }
+
   populateMap(hasKannahArray)
 
 
@@ -60,6 +62,7 @@ $(document).on("ready", function(){
     geocoder.geocode( { 'address': address}, function(results, status) {
       if (status == google.maps.GeocoderStatus.OK) {
         map.setCenter(results[0].geometry.location);
+        map.setZoom(14);
         }
       else {
         alert("Geocode was not successful for the following reason: " + status);
