@@ -17,8 +17,23 @@ $(document).on("ready", function(){
 
 // Kannah Creek Brewing Company, Place ID: ChIJ81qEAEwcR4cRe2NQBSo1Vww
 // Edgewater Brewery, Place ID: ChIJI4bjvHAcR4cRNOwP0kGsGeU
-  var hasKannahArray = ["ChIJI4bjvHAcR4cRNOwP0kGsGeU","ChIJ81qEAEwcR4cRe2NQBSo1Vww"]
-  var hasKannahObject = {};
+  // var hasKannahArray = ["ChIJI4bjvHAcR4cRNOwP0kGsGeU","ChIJ81qEAEwcR4cRe2NQBSo1Vww"]
+  var hasKannah = {
+      "Kannah Creek Brewing Company": {
+        name: "Kannah Creek",
+        placeId: "ChIJ81qEAEwcR4cRe2NQBSo1Vww"
+      },
+      "Lala's Wine Bar": {
+        name: "Lala's Wine Bar",
+        placeId: "ChIJjf6Sudl-bIcR3Uj_41fgHiY"
+      },
+      "Capitol Heights Pharmacy & Liquor": {
+        name: "Capitol Heights Pharmacy & Liquor",
+        placeId: "ChIJ6cmKPa9-bIcRmW5U1Hr0fOc"
+      }
+  }
+
+
 
   // -----apply placesID's to map -------- //
   var infowindow = new google.maps.InfoWindow();
@@ -34,9 +49,15 @@ $(document).on("ready", function(){
 
   }
 
-  function populateMap(arr) {
+  // get object from scraper
+
+  function populateMap(obj) {
+    var arr = Object.keys(obj);
     for (var i = 0; i < arr.length; i++) {
-      service.getDetails({placeId: arr[i]}, function(place, status) {
+      //need to create an obj {placeId: id}
+      //this is bull shit...idObj[placeId] = obj[keys[i]][placeId];
+      var placeIdObject = {"placeId": obj[arr[i]].placeId}
+      service.getDetails(placeIdObject, function(place, status) {
         if (status === google.maps.places.PlacesServiceStatus.OK) {
           google.maps.event.addListener(
               createMarker(place, map),
@@ -51,9 +72,10 @@ $(document).on("ready", function(){
     };
   }
 
-  populateMap(hasKannahArray)
 
+  populateMap(hasKannah)
 
+  // -------- move map and zoom with zip code input -------- //
   var geocoder;
 
   function codeAddress() {
