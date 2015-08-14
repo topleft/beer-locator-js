@@ -1,1 +1,9 @@
 /* add custom styles */
+
+.admin-toggle{
+  display: none;
+}
+
+.find-beer-toggle {
+  display: none;
+}

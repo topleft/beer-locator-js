@@ -2,20 +2,21 @@
 // store google place objects
 var places = {}
 
-$(document).ready(function(){
-    var map = new google.maps.Map(document.getElementById('map'), {
+$(document).on("ready", function(){
+  console.log("click sanity")
+    var scrapeMap = new google.maps.Map(document.getElementById('scraper-map'), {
       center: {lat:39.393981, lng:-106.016311},
       zoom: 7
     });
 
-    var input = document.getElementById('pac-input');
+    var input = document.getElementById('scraper-input');
 
     var autocomplete = new google.maps.places.Autocomplete(input);
-    autocomplete.bindTo('bounds', map);
+    autocomplete.bindTo('bounds', scrapeMap);
 
     var infowindow = new google.maps.InfoWindow();
     var marker = new google.maps.Marker({
-      map: map
+      map: scrapeMap
     });
 
     autocomplete.addListener('place_changed', function() {
@@ -24,12 +25,11 @@ $(document).ready(function(){
       if (!place.geometry) {
         return;
       }
-
       if (place.geometry.viewport) {
-        map.fitBounds(place.geometry.viewport);
+        scrapeMap.fitBounds(place.geometry.viewport);
       } else {
-        map.setCenter(place.geometry.location);
-        map.setZoom(17);
+        scrapeMap.setCenter(place.geometry.location);
+        scrapeMap.setZoom(17);
       }
 
       // Set the position of the marker using the place ID and location.
@@ -42,10 +42,10 @@ $(document).ready(function(){
       infowindow.setContent('<div><strong>' + place.name + '</strong><br>' +
           'Place ID: ' + place.place_id + '<br>' +
           place.formatted_address);
-      infowindow.open(map, marker);
+      infowindow.open(scrapeMap, marker);
 
 
-      // add places to object for use in beer map
+      // add places to object for use in beer maps
       places[place.name] = {"name":place.name, "placeId": place.place_id}
       console.log(places);
 
