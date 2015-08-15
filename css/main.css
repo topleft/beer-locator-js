@@ -21,6 +21,10 @@ body {
   background-color: #BF2519;
 }
 
+.btn-primary:hover {
+  background-color: #880D03;
+}
+
 .big-btn {
   width:80%;
   margin: auto;
@@ -29,15 +33,18 @@ body {
   font-size: 3rem;
 }
 
-.center {
-  text-align: center;
+
+.input {
+  margin-top: 2rem;
+  width: 100%;
 }
-
-
 
 .map {
   width: 100%;
   height: 500px;
+}
 
+.icon {
+  font-size: 4rem;
 }
 

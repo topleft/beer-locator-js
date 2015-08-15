@@ -10,6 +10,7 @@
     <link rel="stylesheet" type="text/css" href="css/main.css">
   </head>
   <body>
+  <a name="top"></a>
 
     <br>
     <br>
@@ -36,21 +37,34 @@
 <!-- admin map -->
 
     <div id="admin-container" class="admin-toggle container">
+
       <div class="row">
-        <form class="form-inline">
-          <div class="form-group">
-            <div class="panel panel-default">
-              <div class="panel-body">
-                <input id="admin-input" class="controls form-control" type="text" placeholder="enter location...">
-                <button id="add-location" type="submit" class="btn btn-default">Add Location</button>
+        <div class="col-md-4">
+          <form class="form-inline">
+            <div class="form-group">
+              <div class="panel panel-default">
+                <div class="panel-body">
+                  <div class="col-md-7">
+                    <input id="admin-input" class="controls form-control" type="text" placeholder="enter location...">
+                  </div>
+                  <div class="col-md-5">
+                    <button id="add-location" type="submit" class="btn btn-default">Add Location</button>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </form>
-        <div class="panel panel-default">
-          <div class="panel-body">
-            <div class="map" id="admin-map"></div>
-          </div>
+          </form>
+        </div>
+
+        <div class="col-md-2 col-md-offset-6 form-group">
+          <a href="#top" aria-label="Go to Top"><span class="glyphicon glyphicon-menu-up icon" aria-hidden="true"></span></a>
+        </div>
+
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <div class="map" id="admin-map"></div>
         </div>
       </div>
     </div>
@@ -60,22 +74,37 @@
 
     <div id="find-beer-container" class="find-beer-toggle container">
       <div class="row">
+
+
+      <div class="col-md-4">
         <form class="form-inline">
           <div class="form-group">
             <div class="panel panel-default">
               <div class="panel-body">
-                <input id="find-beer-input" class="controls form-control" type="text" placeholder="enter zip...">
-                <button id="find-beer" type="submit" class="btn btn-default">Find Beer</button>
+                <div class="col-md-8">
+                  <input id="find-beer-input" class="controls form-control input" type="text" placeholder="enter zip...">
+                </div>
+                <div class="col-md-4">
+                  <button id="find-beer" type="submit" class="btn btn-default">Find Beer</button>
+                </div>
               </div>
             </div>
           </div>
         </form>
+        </div>
+
+        <div class="col-md-2 col-md-offset-6 form-group">
+          <a href="#top" aria-label="Go to Top"><span class="glyphicon glyphicon-menu-up icon" aria-hidden="true"></span></a>
+        </div>
+
+
+      </div>
+
         <div class="panel panel-default">
           <div class="panel-body">
             <div id="map" class="map"></div>
           </div>
         </div>
-      </div>
     </div>
 
 
