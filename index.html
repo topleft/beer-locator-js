@@ -49,7 +49,7 @@
         </form>
         <div class="panel panel-default">
           <div class="panel-body">
-            <div class="center" id="admin-map" style="width:1000px;height:500px;"></div>
+            <div class="map" id="admin-map"></div>
           </div>
         </div>
       </div>
@@ -58,7 +58,28 @@
 
 <!-- find beer map -->
 
-    <div class="find-beer-toggle">
+    <div id="find-beer-container" class="find-beer-toggle container">
+      <div class="row">
+        <form class="form-inline">
+          <div class="form-group">
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <input id="find-beer-input" class="controls form-control" type="text" placeholder="enter zip...">
+                <button id="find-beer" type="submit" class="btn btn-default">Find Beer</button>
+              </div>
+            </div>
+          </div>
+        </form>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div id="map" class="map"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+<!--     <div class="find-beer-toggle">
       <form class="form-inline">
         <div class="form-group">
           <label>Zip Code</label>
@@ -67,7 +88,7 @@
         <button id="find-beer" type="submit" class="btn btn-default">Find Beer</button>
       </form>
       <div id="map" style="width:1000px;height:500px;"></div>
-    </div>
+    </div> -->
 
 
 

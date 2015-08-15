@@ -14,7 +14,7 @@ $(document).on("ready", function(){
       center: {lat:39.393981, lng:-106.016311},
       zoom: 7
     });
-
+    var place;
     var input = document.getElementById('admin-input');
 
     var autocomplete = new google.maps.places.Autocomplete(input);
@@ -27,7 +27,17 @@ $(document).on("ready", function(){
 
     autocomplete.addListener('place_changed', function() {
       infowindow.close();
-      var place = autocomplete.getPlace();
+      place = autocomplete.getPlace();
+    });
+
+    window.location.hash = "admin-input";
+    // window.location.hash = "";
+
+
+
+    $(".admin-toggle form").on("submit", function(e){
+      e.preventDefault();
+
       if (!place.geometry) {
         return;
       }
@@ -129,13 +139,15 @@ $(document).on("ready", function(){
 
 
     populateMap(hasKannah)
+    window.location.hash = "find-beer-input";
+    // window.location.hash = "";
 
   // -------- move map and zoom with zip code input -------- //
     var geocoder;
 
     function codeAddress() {
       geocoder = new google.maps.Geocoder();
-      var address = document.getElementById("pac-input").value;
+      var address = document.getElementById("find-beer-input").value;
       geocoder.geocode( { 'address': address}, function(results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
           map.setCenter(results[0].geometry.location);
