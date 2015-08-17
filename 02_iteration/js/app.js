@@ -3,6 +3,7 @@ $(document).on("ready", function(){
   var hasKannah = []
   var adminMap;
 
+  // clear out entries on submit
   // get better kannah logo
   // header footer bars
   // refactor into utility and app
@@ -12,26 +13,20 @@ $(document).on("ready", function(){
 
   $("#admin").on("click", function(e){
     e.preventDefault();
-
     $(".admin-toggle").show();
     $(".find-beer-toggle").hide();
 
-
     // create map and put on DOM
-    var adminMap = new google.maps.Map(
-      document.getElementById('admin-map'), {
-        center: {lat:39.393981, lng:-106.016311},
-        zoom: 7
+    var adminMap = new google.maps.Map(document.getElementById('admin-map'), {
+      center: {lat:39.393981, lng:-106.016311},
+      zoom: 7
     });
 
-    // grab form input
+    // grab form input element
     var input = document.getElementById('admin-input');
 
     // intitalize autocomplete on form intput
-    // make auto complete return results inside
-    // current map view before elsewhere
-    var autocomplete = new
-      google.maps.places.Autocomplete(input);
+    var autocomplete = new google.maps.places.Autocomplete(input);
     autocomplete.bindTo('bounds', adminMap);
 
     // instantiate info window
@@ -49,16 +44,12 @@ $(document).on("ready", function(){
     autocomplete.addListener('place_changed', function() {
       infowindow.close();
       place = autocomplete.getPlace();
-
     });
-
 
     // listen for user clicking button or hitting enter on keyboard
     $(".admin-toggle form").on("submit", function(e){
       e.preventDefault();
       $("#admin-input").val("");
-
-
       // check to see if place object has a location
       if (!place.geometry) {
         return;
@@ -94,27 +85,25 @@ $(document).on("ready", function(){
       hasKannah.push({"name":place.name, "placeId": place.place_id})
     });
 
-    // smooth scroll admin map
+    // smooth scroll
     $('html, body').animate({
       scrollTop: $('#admin-scroll-point').offset().top
       }, 1500);
-
-
     });
 
 
   // -----apply placesID's to map -------- //
 
-
-
   $("#find-beer").on("click", function(){
-
     $(".find-beer-toggle").show();
     $(".admin-toggle").hide();
 
 
     var infowindow = new google.maps.InfoWindow();
-    var initialCenter = new google.maps.LatLng(39.393981, -106.016311);
+    var initialCenter = new google.maps.LatLng(
+      39.393981,
+      -106.016311);
+    var map;
     var myOptions =
       {
       zoom: 6,
@@ -122,10 +111,37 @@ $(document).on("ready", function(){
       center: initialCenter
       }
 
-    var map = new google.maps.Map(document.getElementById("map"), myOptions);
+    map = new google.maps.Map(document.getElementById("map"), myOptions);
     var service = new google.maps.places.PlacesService(map);
 
-    populateMap(hasKannah)
+    function createMarker(place, map){
+      var marker = new google.maps.Marker({
+        "map": map,
+        position: place.geometry.location
+      });
+      return marker;
+    }
+
+    var arr = hasKannah;
+
+    for (var i = 0; i < arr.length; i++) {
+      var currentId = arr[i].placeId;
+      service.getDetails({placeId: currentId}, function(place, status) {
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+          google.maps.event.addListener(
+            createMarker(place, map),
+              'click',
+                function() {
+                  infowindow.setContent(place.name, place.postal_code);
+                  infowindow.open(map, this);
+                }
+          );
+        }
+      });
+    };
+  });
+
+
 
 
     // --------- smooth croll ------------- //
@@ -134,17 +150,27 @@ $(document).on("ready", function(){
       }, 1000);
 
   // -------- move map and zoom with zip code input -------- //
-    var geocoder;
 
-    $("form").on("submit", function(e){
+    $(".find-beer-toggle form").on("submit", function(e){
       e.preventDefault();
-      codeAddress();
+      var geocoder;
+
+      geocoder = new google.maps.Geocoder();
+      var address = document.getElementById("find-beer-input").value;
+      geocoder.geocode( { 'address': address}, function(results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+          map.setCenter(results[0].geometry.location);
+          map.setZoom(12);
+          }
+        else {
+          alert("Geocode was not successful for the following reason: " + status + ", inside");
+        }
+      });
+
+
       $("#find-beer-input").val("");
 
-      // grab locations in current view and list them
-
-    });
-
+  // closes event hanlder
   });
 
   // smooth scroll up to top
