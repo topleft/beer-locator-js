@@ -165,7 +165,7 @@ $(document).on("ready", function(){
       geocoder.geocode( { 'address': address}, function(results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
           map.setCenter(results[0].geometry.location);
-          map.setZoom(12);
+          map.setZoom(14);
           }
         else {
           alert("Geocode was not successful for the following reason: " + status + ", inside");
