@@ -52,8 +52,6 @@ $(document).on("ready", function(){
     $(".admin-toggle form").on("submit", function(e){
       e.preventDefault();
       $("#admin-input").val("");
-
-
       // check to see if place object has a location
       if (!place.geometry) {
         return;
@@ -93,8 +91,6 @@ $(document).on("ready", function(){
     $('html, body').animate({
       scrollTop: $('#admin-scroll-point').offset().top
       }, 1500);
-
-
     });
 
 
@@ -129,7 +125,8 @@ $(document).on("ready", function(){
     }
 
 
-    function populateMap(arr) {
+    var arr = hasKannah;
+
       for (var i = 0; i < arr.length; i++) {
         var currentId = arr[i].placeId;
         service.getDetails({placeId: currentId}, function(place, status) {
@@ -145,10 +142,9 @@ $(document).on("ready", function(){
           }
         });
       };
-    }
+  });
 
 
-    populateMap(hasKannah)
 
 
     // --------- smooth croll ------------- //
@@ -157,28 +153,25 @@ $(document).on("ready", function(){
       }, 1000);
 
   // -------- move map and zoom with zip code input -------- //
-    var geocoder;
 
-    function codeAddress() {
+    $(".find-beer-toggle form").on("submit", function(e){
+      e.preventDefault();
+      var geocoder;
+
       geocoder = new google.maps.Geocoder();
       var address = document.getElementById("find-beer-input").value;
       geocoder.geocode( { 'address': address}, function(results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
           map.setCenter(results[0].geometry.location);
-          map.setZoom(14);
+          map.setZoom(12);
           }
         else {
-          alert("Geocode was not successful for the following reason: " + status);
+          alert("Geocode was not successful for the following reason: " + status + ", inside");
         }
       });
-    };
 
-    $("form").on("submit", function(e){
-      e.preventDefault();
-      codeAddress();
+
       $("#find-beer-input").val("");
-    });
-
 
   // closes event hanlder
   });
