@@ -35,39 +35,45 @@
     <br>
 
 <!-- admin map -->
-    <a id="admin-scroll-point"></a>
-    <div id="admin-container" class="admin-toggle container">
 
-      <div class="row">
-        <div class="col-md-4">
-          <form class="form-inline">
-            <div class="form-group">
-              <div class="panel panel-default">
-                <div class="panel-body">
-                  <div class="col-md-7">
-                    <input id="admin-input" class="controls form-control" type="text" placeholder="enter location...">
+
+    <div class="modal admin-toggle">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h5 class="modal-title">Add Locations</h5>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-12">
+                <form class="form-inline">
+                  <div class="form-group">
+                    <div class="panel panel-default">
+                      <div class="panel-body">
+                        <div class="col-md-7">
+                          <input id="admin-input" class="controls form-control" type="text" placeholder="enter location...">
+                        </div>
+                        <div class="col-md-5">
+                          <button id="add-location" type="submit" class="btn btn-default">Add Location</button>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div class="col-md-5">
-                    <button id="add-location" type="submit" class="btn btn-default">Add Location</button>
-                  </div>
-                </div>
+                </form>
               </div>
-            </div>
-          </form>
-        </div>
 
-        <div class="col-md-2 col-md-offset-6 form-group">
-          <a href="#top" aria-label="Go to Top"><span class="glyphicon glyphicon-menu-up icon" aria-hidden="true"></span></a>
-        </div>
+              <div class="map" id="admin-map"></div>
+              </div>
 
-      </div>
-
-      <div class="panel panel-default">
-        <div class="panel-body">
-          <div class="map" id="admin-map"></div>
+              <div class="modal-footer">
+              </div>
+          </div>
         </div>
       </div>
     </div>
+
+
 
 
 <!-- find beer map -->

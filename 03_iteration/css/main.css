@@ -25,6 +25,11 @@ body {
   background-color: #880D03;
 }
 
+.btn-primary:active{
+  background-color: #880D03;
+
+}
+
 .big-btn {
   width:80%;
   margin: auto;
@@ -46,5 +51,21 @@ body {
 
 .icon {
   font-size: 4rem;
+}
+
+.modal-dialog {
+  width: 80%;
+}
+
+.modal-content {
+  border: 4px solid #BF2519;
+  border-radius: 3rem;
+  background-color: rgba(255,255,255,0.9);
+
+
+}
+
+.pac-container {
+  z-index: 1051 !important;
 }
 

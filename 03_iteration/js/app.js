@@ -2,6 +2,7 @@ $(document).on("ready", function(){
 
   var hasKannah = []
   var adminMap;
+  var map;
 
   // clear out entries on submit
   // get better kannah logo
@@ -16,6 +17,10 @@ $(document).on("ready", function(){
     $(".admin-toggle").show();
     $(".find-beer-toggle").hide();
 
+    $(".close").on("click", function(){
+      $(".admin-toggle").hide();
+    });
+
     // create map and put on DOM
     var adminMap = new google.maps.Map(document.getElementById('admin-map'), {
       center: {lat:39.393981, lng:-106.016311},
@@ -24,7 +29,7 @@ $(document).on("ready", function(){
 
     // grab form input element
     var input = document.getElementById('admin-input');
-
+    console.log(input);
     // intitalize autocomplete on form intput
     var autocomplete = new google.maps.places.Autocomplete(input);
     autocomplete.bindTo('bounds', adminMap);
@@ -86,9 +91,9 @@ $(document).on("ready", function(){
     });
 
     // smooth scroll
-    $('html, body').animate({
-      scrollTop: $('#admin-scroll-point').offset().top
-      }, 1500);
+    // $('html, body').animate({
+    //   scrollTop: $('#admin-scroll-point').offset().top
+    //   }, 1500);
     });
 
 
@@ -103,7 +108,6 @@ $(document).on("ready", function(){
     var initialCenter = new google.maps.LatLng(
       39.393981,
       -106.016311);
-    var map;
     var myOptions =
       {
       zoom: 6,
@@ -139,15 +143,16 @@ $(document).on("ready", function(){
         }
       });
     };
+    // --------- smooth croll ------------- //
+    $('html, body').animate({
+      scrollTop: $('#find-beer-scroll-point').offset().top
+      }, 1000);
   });
 
 
 
 
-    // --------- smooth croll ------------- //
-    $('html, body').animate({
-      scrollTop: $('#find-beer-scroll-point').offset().top
-      }, 1000);
+
 
   // -------- move map and zoom with zip code input -------- //
 
