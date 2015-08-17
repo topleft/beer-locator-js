@@ -4,6 +4,17 @@ $(document).on("ready", function(){
   var adminMap;
 
 
+
+  // clear out entries on submit
+  // get better kannah logo
+  // header footer bars
+
+
+
+
+
+
+
   // ----- Admin Locations Map -------- //
 
   $("#admin").on("click", function(e){
@@ -76,27 +87,10 @@ $(document).on("ready", function(){
 
     });
 
-    // set view poert to admin map
-    window.location.hash = "admin-input";
-  });
-
-
-  // *** locations object for testing  *** //
-  // var hasKannah = {
-  //     "Kannah Creek Brewing Company": {
-  //       name: "Kannah Creek",
-  //       placeId: "ChIJ81qEAEwcR4cRe2NQBSo1Vww"
-  //     },
-  //     "Lala's Wine Bar": {
-  //       name: "Lala's Wine Bar",
-  //       placeId: "ChIJjf6Sudl-bIcR3Uj_41fgHiY"
-  //     },
-  //     "Capitol Heights Pharmacy & Liquor": {
-  //       name: "Capitol Heights Pharmacy & Liquor",
-  //       placeId: "ChIJ6cmKPa9-bIcRmW5U1Hr0fOc"
-  //     }
-  // }
-
+    $('html, body').animate({
+      scrollTop: $('#admin-scroll-point').offset().top
+      }, 1500);
+    });
 
 
   // -----apply placesID's to map -------- //
@@ -149,8 +143,12 @@ $(document).on("ready", function(){
 
 
     populateMap(hasKannah)
-    window.location.hash = "find-beer-input";
-    // window.location.hash = "";
+
+
+    // --------- smooth croll ------------- //
+    $('html, body').animate({
+      scrollTop: $('#find-beer-scroll-point').offset().top
+      }, 1000);
 
   // -------- move map and zoom with zip code input -------- //
     var geocoder;
@@ -178,6 +176,15 @@ $(document).on("ready", function(){
 
   // closes event hanlder
   });
+
+
+  $(".icon").on("click", function(){
+    $('html, body').animate({
+      scrollTop: $('#top').offset().top
+      }, 1000);
+    });
+
+
 // closes document on ready
 });
 
