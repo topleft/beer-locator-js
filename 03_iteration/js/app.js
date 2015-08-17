@@ -179,7 +179,8 @@ $(document).on("ready", function(){
   });
 
   // smooth scroll up to top
-  $(".icon").on("click", function(){
+  $(".icon").on("click", function(e){
+    e.preventDefault();
     $('html, body').animate({
       scrollTop: $('#top').offset().top
       }, 1000);
