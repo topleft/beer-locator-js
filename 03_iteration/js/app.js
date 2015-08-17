@@ -2,7 +2,6 @@ $(document).on("ready", function(){
 
   var hasKannah = []
   var adminMap;
-  var map;
 
   // clear out entries on submit
   // get better kannah logo
@@ -104,6 +103,7 @@ $(document).on("ready", function(){
     var initialCenter = new google.maps.LatLng(
       39.393981,
       -106.016311);
+    var map;
     var myOptions =
       {
       zoom: 6,
@@ -139,16 +139,15 @@ $(document).on("ready", function(){
         }
       });
     };
-    // --------- smooth croll ------------- //
-    $('html, body').animate({
-      scrollTop: $('#find-beer-scroll-point').offset().top
-      }, 1000);
   });
 
 
 
 
-
+    // --------- smooth croll ------------- //
+    $('html, body').animate({
+      scrollTop: $('#find-beer-scroll-point').offset().top
+      }, 1000);
 
   // -------- move map and zoom with zip code input -------- //
 
