@@ -8,11 +8,7 @@ $(document).on("ready", function(){
   // clear out entries on submit
   // get better kannah logo
   // header footer bars
-
-
-
-
-
+  // refactor into utility and app
 
 
   // ----- Admin Locations Map -------- //
@@ -21,23 +17,28 @@ $(document).on("ready", function(){
     e.preventDefault();
     $(".admin-toggle").show();
 
-    // create map
+    // create map and put on DOM
     var adminMap = new google.maps.Map(document.getElementById('admin-map'), {
       center: {lat:39.393981, lng:-106.016311},
       zoom: 7
     });
-    // grap form input
+
+    // grab form input
     var input = document.getElementById('admin-input');
+
     // intitalize autocomplete on form intput
     var autocomplete = new google.maps.places.Autocomplete(input);
     autocomplete.bindTo('bounds', adminMap);
+
     // instantiate info window
     var infowindow = new google.maps.InfoWindow();
+
     // instantiate new marker specific to admin map
     var marker = new google.maps.Marker({
       map: adminMap
     });
-    // create scoped place variable
+
+    // create scoped 'place' variable
     var place;
 
     // listen for change in form input, assign value to place variable
@@ -83,9 +84,8 @@ $(document).on("ready", function(){
 
       // add places to object for use in beer maps
       hasKannah.push({"name":place.name, "placeId": place.place_id})
-
-
     });
+
 
     $('html, body').animate({
       scrollTop: $('#admin-scroll-point').offset().top
@@ -99,7 +99,6 @@ $(document).on("ready", function(){
 
   $("#find-beer").on("click", function(){
     $(".find-beer-toggle").show();
-    console.log(hasKannah);
 
     var infowindow = new google.maps.InfoWindow();
     var initialCenter = new google.maps.LatLng(39.393981, -106.016311);
@@ -170,14 +169,14 @@ $(document).on("ready", function(){
     $("form").on("submit", function(e){
       e.preventDefault();
       codeAddress();
+      $("#find-beer-input").val("");
     });
-
 
 
   // closes event hanlder
   });
 
-
+  // smooth scroll up to top
   $(".icon").on("click", function(){
     $('html, body').animate({
       scrollTop: $('#top').offset().top
