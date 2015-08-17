@@ -3,7 +3,6 @@ $(document).on("ready", function(){
   var hasKannah = []
   var adminMap;
 
-  // clear out entries on submit
   // get better kannah logo
   // header footer bars
   // refactor into utility and app
@@ -13,19 +12,26 @@ $(document).on("ready", function(){
 
   $("#admin").on("click", function(e){
     e.preventDefault();
+
     $(".admin-toggle").show();
+    $(".find-beer-toggle").hide();
+
 
     // create map and put on DOM
-    var adminMap = new google.maps.Map(document.getElementById('admin-map'), {
-      center: {lat:39.393981, lng:-106.016311},
-      zoom: 7
+    var adminMap = new google.maps.Map(
+      document.getElementById('admin-map'), {
+        center: {lat:39.393981, lng:-106.016311},
+        zoom: 7
     });
 
     // grab form input
     var input = document.getElementById('admin-input');
 
     // intitalize autocomplete on form intput
-    var autocomplete = new google.maps.places.Autocomplete(input);
+    // make auto complete return results inside
+    // current map view before elsewhere
+    var autocomplete = new
+      google.maps.places.Autocomplete(input);
     autocomplete.bindTo('bounds', adminMap);
 
     // instantiate info window
@@ -45,6 +51,7 @@ $(document).on("ready", function(){
       place = autocomplete.getPlace();
 
     });
+
 
     // listen for user clicking button or hitting enter on keyboard
     $(".admin-toggle form").on("submit", function(e){
@@ -87,7 +94,7 @@ $(document).on("ready", function(){
       hasKannah.push({"name":place.name, "placeId": place.place_id})
     });
 
-
+    // smooth scroll admin map
     $('html, body').animate({
       scrollTop: $('#admin-scroll-point').offset().top
       }, 1500);
@@ -101,11 +108,13 @@ $(document).on("ready", function(){
 
 
   $("#find-beer").on("click", function(){
+
     $(".find-beer-toggle").show();
+    $(".admin-toggle").hide();
+
 
     var infowindow = new google.maps.InfoWindow();
     var initialCenter = new google.maps.LatLng(39.393981, -106.016311);
-    var map;
     var myOptions =
       {
       zoom: 6,
@@ -113,36 +122,8 @@ $(document).on("ready", function(){
       center: initialCenter
       }
 
-    map = new google.maps.Map(document.getElementById("map"), myOptions);
+    var map = new google.maps.Map(document.getElementById("map"), myOptions);
     var service = new google.maps.places.PlacesService(map);
-
-    function createMarker(place, map){
-      var marker = new google.maps.Marker({
-        "map": map,
-        position: place.geometry.location
-      });
-      return marker;
-    }
-
-
-    function populateMap(arr) {
-      for (var i = 0; i < arr.length; i++) {
-        var currentId = arr[i].placeId;
-        service.getDetails({placeId: currentId}, function(place, status) {
-          if (status === google.maps.places.PlacesServiceStatus.OK) {
-            google.maps.event.addListener(
-                createMarker(place, map),
-                'click',
-                  function() {
-                    infowindow.setContent(place.name, place.postal_code);
-                    infowindow.open(map, this);
-                  }
-            );
-          }
-        });
-      };
-    }
-
 
     populateMap(hasKannah)
 
@@ -155,28 +136,15 @@ $(document).on("ready", function(){
   // -------- move map and zoom with zip code input -------- //
     var geocoder;
 
-    function codeAddress() {
-      geocoder = new google.maps.Geocoder();
-      var address = document.getElementById("find-beer-input").value;
-      geocoder.geocode( { 'address': address}, function(results, status) {
-        if (status == google.maps.GeocoderStatus.OK) {
-          map.setCenter(results[0].geometry.location);
-          map.setZoom(14);
-          }
-        else {
-          alert("Geocode was not successful for the following reason: " + status);
-        }
-      });
-    };
-
     $("form").on("submit", function(e){
       e.preventDefault();
       codeAddress();
       $("#find-beer-input").val("");
+
+      // grab locations in current view and list them
+
     });
 
-
-  // closes event hanlder
   });
 
   // smooth scroll up to top
