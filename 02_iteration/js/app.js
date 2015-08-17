@@ -3,8 +3,6 @@ $(document).on("ready", function(){
   var hasKannah = []
   var adminMap;
 
-
-
   // clear out entries on submit
   // get better kannah logo
   // header footer bars
@@ -45,11 +43,14 @@ $(document).on("ready", function(){
     autocomplete.addListener('place_changed', function() {
       infowindow.close();
       place = autocomplete.getPlace();
+
     });
 
     // listen for user clicking button or hitting enter on keyboard
     $(".admin-toggle form").on("submit", function(e){
       e.preventDefault();
+      $("#admin-input").val("");
+
 
       // check to see if place object has a location
       if (!place.geometry) {
@@ -90,6 +91,8 @@ $(document).on("ready", function(){
     $('html, body').animate({
       scrollTop: $('#admin-scroll-point').offset().top
       }, 1500);
+
+
     });
 
 
