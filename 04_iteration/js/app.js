@@ -116,6 +116,26 @@ $(document).on("ready", function(){
 
 
     map = new google.maps.Map(document.getElementById("map"), myOptions);
+    map.addListener('idle', function(){
+      console.log(map)
+      var service = new google.maps.places.PlacesService(map);
+      var arr = hasKannah;
+      var bounds = map.getBounds();
+      console.log(arr)
+      $("#map-listings").empty();
+      for (var i = 0; i < arr.length; i++) {
+        console.log(i);
+        var currentId = arr[i].placeId;
+        service.getDetails({placeId: currentId}, function(place, status) {
+          if (status === google.maps.places.PlacesServiceStatus.OK) {
+            if (bounds.contains(place.geometry.location)){
+              $("#map-listings").append("<h3>"+place.name+"</h3>");
+            }
+          }
+        });
+      };
+    });
+
     var service = new google.maps.places.PlacesService(map);
 
     function createMarker(place, map){
@@ -189,30 +209,10 @@ $(document).on("ready", function(){
       });
 
       $("#find-beer-input").val("");
+
   // closes event hanlder
   });
 
-  // console.log(map)
-
-    // need to use a call back or 'promise' to make this work
-    google.maps.event.addListener(map, 'changed_bounds', function(){
-      var service = new google.maps.places.PlacesService(map);
-      var arr = hasKannah;
-      var bounds = map.getBounds();
-      console.log(arr)
-      $("#map-listings").empty();
-      for (var i = 0; i < arr.length; i++) {
-        console.log(i);
-        var currentId = arr[i].placeId;
-        service.getDetails({placeId: currentId}, function(place, status) {
-          if (status === google.maps.places.PlacesServiceStatus.OK) {
-            if (bounds.contains(place.geometry.location)){
-              $("#map-listings").append("<h3>"+place.name+"</h3>");
-            }
-          }
-        });
-      };
-    });
 
 
 
