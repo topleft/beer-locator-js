@@ -1,8 +1,10 @@
 $(document).on("ready", function(){
 
+  // -- globals -- //
   var hasKannah = []
   var adminMap;
   var map;
+
 
   // ------------------------------------//
   // ----- Admin Locations Map -------- //
@@ -13,6 +15,7 @@ $(document).on("ready", function(){
     $(".admin-toggle").show();
     $(".find-beer-toggle").hide();
 
+    // close modal on click
     $(".close").on("click", function(){
       $(".admin-toggle").hide();
     });
@@ -86,12 +89,12 @@ $(document).on("ready", function(){
       hasKannah.push({"name":place.name, "placeId": place.place_id})
     });
 
+  });
 
-    });
 
 
   // ---------------------------------------//
-  // ----- apply placeID's to map -------- //
+  // ----- apply placesID's to map -------- //
   // ---------------------------------------//
 
   $("#find-beer").on("click", function(){
@@ -109,6 +112,8 @@ $(document).on("ready", function(){
       mapTypeId: google.maps.MapTypeId.ROADMAP,
       center: initialCenter
       }
+
+
 
     map = new google.maps.Map(document.getElementById("map"), myOptions);
     var service = new google.maps.places.PlacesService(map);
@@ -131,9 +136,7 @@ $(document).on("ready", function(){
             createMarker(place, map),
               'click',
                 function() {
-                  infowindow.setContent('<div><strong>' + place.name + '</strong><br>' +
-                  'Open: ' + place.opening_hours.open_now + '<br>' +
-                  place.formatted_address);
+                  infowindow.setContent(place.name);
                   infowindow.open(map, this);
                 }
           );
@@ -144,6 +147,8 @@ $(document).on("ready", function(){
     $('html, body').animate({
       scrollTop: $('#find-beer-scroll-point').offset().top
       }, 1000);
+
+
   });
 
 
@@ -153,25 +158,63 @@ $(document).on("ready", function(){
 
     $(".find-beer-toggle form").on("submit", function(e){
       e.preventDefault();
+      console.log(map);
       var geocoder;
-
       geocoder = new google.maps.Geocoder();
       var address = document.getElementById("find-beer-input").value;
       geocoder.geocode( { 'address': address}, function(results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
           map.setCenter(results[0].geometry.location);
           map.setZoom(14);
+          var service = new google.maps.places.PlacesService(map);
+          var arr = hasKannah;
+          $("#map-listings").empty();
+          // if hasKannah maker in bounds, list it
+          for (var i = 0; i < arr.length; i++) {
+            console.log(i);
+            var currentId = arr[i].placeId;
+            service.getDetails({placeId: currentId}, function(place, status) {
+              if (status === google.maps.places.PlacesServiceStatus.OK) {
+                if (map.getBounds().contains(place.geometry.location)){
+                  $("#map-listings").append("<h3>"+place.name+"</h3>");
+                }
+
+              }
+            });
+          };
           }
         else {
           alert("Geocode was not successful for the following reason: " + status + ", inside");
         }
       });
 
-
       $("#find-beer-input").val("");
-
   // closes event hanlder
   });
+
+  // console.log(map)
+
+    // need to use a call back or 'promise' to make this work
+    google.maps.event.addListener(map, 'changed_bounds', function(){
+      var service = new google.maps.places.PlacesService(map);
+      var arr = hasKannah;
+      var bounds = map.getBounds();
+      console.log(arr)
+      $("#map-listings").empty();
+      for (var i = 0; i < arr.length; i++) {
+        console.log(i);
+        var currentId = arr[i].placeId;
+        service.getDetails({placeId: currentId}, function(place, status) {
+          if (status === google.maps.places.PlacesServiceStatus.OK) {
+            if (bounds.contains(place.geometry.location)){
+              $("#map-listings").append("<h3>"+place.name+"</h3>");
+            }
+          }
+        });
+      };
+    });
+
+
 
   // smooth scroll up to top
   $(".icon").on("click", function(e){
@@ -184,4 +227,5 @@ $(document).on("ready", function(){
 
 // closes document on ready
 });
+
 
