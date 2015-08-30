@@ -114,7 +114,6 @@ $(document).on("ready", function(){
       }
 
 
-
     map = new google.maps.Map(document.getElementById("map"), myOptions);
     map.addListener('idle', function(){
       console.log(map)
