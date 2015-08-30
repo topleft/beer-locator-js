@@ -129,7 +129,21 @@ $(document).on("ready", function(){
         service.getDetails({placeId: currentId}, function(place, status) {
           if (status === google.maps.places.PlacesServiceStatus.OK) {
             if (bounds.contains(place.geometry.location)){
-              $("#map-listings").append("<h3>"+place.name+"</h3>");
+              if(place.opening_hours.open_now){
+                var style = " style='color:green;'"
+                var open = "Yes";
+              }
+              else {
+                var style = " style='color:red;'"
+                var open = "No";
+              }
+              $("#map-listings").append("<div class='list'>"+
+                                        "<h4>"+place.name+"</h4>"+
+                                        "<a href="+place.formatted_phone_number+">Phone:"+place.formatted_phone_number+"</a>"+
+                                        "<p>"+place.formatted_address+"</p>"+
+                                        "<p"+style+">Open: "+open+"</p>"+
+                                        "</div>"
+                                       );
             }
           }
         });
@@ -163,11 +177,11 @@ $(document).on("ready", function(){
         }
       });
     };
+
     // --------- smooth croll ------------- //
     $('html, body').animate({
       scrollTop: $('#find-beer-scroll-point').offset().top
       }, 1000);
-
 
   });
 
@@ -186,27 +200,11 @@ $(document).on("ready", function(){
         if (status == google.maps.GeocoderStatus.OK) {
           map.setCenter(results[0].geometry.location);
           map.setZoom(14);
-          var service = new google.maps.places.PlacesService(map);
-          var arr = hasKannah;
-          $("#map-listings").empty();
-          // if hasKannah maker in bounds, list it
-          for (var i = 0; i < arr.length; i++) {
-            console.log(i);
-            var currentId = arr[i].placeId;
-            service.getDetails({placeId: currentId}, function(place, status) {
-              if (status === google.maps.places.PlacesServiceStatus.OK) {
-                if (map.getBounds().contains(place.geometry.location)){
-                  $("#map-listings").append("<h3>"+place.name+"</h3>");
-                }
-
-              }
-            });
-          };
           }
         else {
           alert("Geocode was not successful for the following reason: " + status + ", inside");
-        }
-      });
+          }
+        });
 
       $("#find-beer-input").val("");
 

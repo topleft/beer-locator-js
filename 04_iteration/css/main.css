@@ -79,8 +79,21 @@ body {
   width: 45%;
 }
 
-#map-panel {
+#map-listings {
   float: left;
-  width: 50%;
+  width: 45%;
+  margin-left: 2.5%;
+
+}
+
+.list {
+  background-color: rgba(220, 220, 220, 0.5);
+  border-radius: 1rem;
+  padding: 0.5rem 1rem;
+  margin: 1rem;
+}
+
+.list p {
+  margin: 0;
 }
 

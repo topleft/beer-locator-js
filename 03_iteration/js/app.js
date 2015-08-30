@@ -181,7 +181,6 @@ $(document).on("ready", function(){
       }, 1000);
     });
 
-
 // closes document on ready
 });
 
