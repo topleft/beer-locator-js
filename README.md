@@ -6,7 +6,7 @@
 
   The end product will have a backend that will allow an admin to create, update and delete locations, as well as a database to store created information.
 
-  Current technolgies:
+ Current technolgies:
 
   * HTML
   * CSS
@@ -14,7 +14,8 @@
   * jQuery
   * Google Maps JS API
 
-  Future technologies:
+ Future technologies:
+
   * Mongo/Mongoose
   * Express
   * Angular
