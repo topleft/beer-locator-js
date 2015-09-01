@@ -9,12 +9,20 @@ var Admin = new Schema({
 });
 
 var Location = new Schema({
-  name: String,
-  placeId: String,
-  type: String
+  name: String, // place.name
+  placeId: String, // place._id
+  type: String, // bar, restaruant, liquor store
+  active: Boolean
 })
 
-User.plugin(passportLocalMongoose);
+Admin.plugin(passportLocalMongoose);
 
-module.exports = mongoose.model('admins', Admin);
-module.exports = mongoose.model('locations', Location);
+var admin = mongoose.model('admins', Admin)
+var location = mongoose.model('locations', Location);
+
+module.exports = {
+  admin: admin,
+  location: location
+}
+
+mongoose.connect('mongodb://localhost/beer-locator-database');
