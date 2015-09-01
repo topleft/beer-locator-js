@@ -15,7 +15,7 @@ var Location = new Schema({
   active: Boolean
 })
 
-Admin.plugin(passportLocalMongoose);
+// Admin.plugin(passportLocalMongoose);
 
 var admin = mongoose.model('admins', Admin)
 var location = mongoose.model('locations', Location);
