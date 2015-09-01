@@ -7,4 +7,8 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
+router.get('/admin', function(req, res, next) {
+  res.render('admin', { title: 'Kannah Creek Brewing Co.' });
+});
+
 module.exports = router;

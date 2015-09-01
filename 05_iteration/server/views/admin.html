@@ -6,10 +6,35 @@
 {% block content %}
 
   <div class="container">
-
     <h1>{{ title }}</h1>
     <p>Welcome to {{ title }}</p>
-
   </div>
+  <br>
+  <br>
+  <br>
+
+  <div class="row">
+    <div class="col-md-4">
+      <form class="form">
+        <div class="form-group">
+          <div class="panel panel-default">
+            <div class="panel-body">
+                <input id="admin-place-input" class="controls form-control" type="text" placeholder="enter location...">
+                <input id="admin-type-input" class="controls form-control" type="text" placeholder="enter type...">
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox"> Active
+                  </label>
+                </div>
+                <button id="add-location" type="submit" class="btn btn-default">Add Location</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="map col-md-8 col-sm-12" id="admin-map"></div>
+  </div>
+
+<!-- // duplicate above map?   -->
 
 {% endblock %}
