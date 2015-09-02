@@ -1,9 +1,37 @@
 $(document).on("ready", function(){
-  console.log("hello Pete")
-  // -- globals -- //
+  console.log("hello Pete");
 
+  // -- globals -- //
   var adminMap;
   var map;
+  var adminToggle = true; // true is add, false is update/delete
+  $("#add-form").show()
+
+  // ------------------------------------//
+  // ----- Handle Toggle Admin -------- //
+  // ----------------------------------//
+
+  // data on = add, data off = Update
+  $("#admin-toggle").closest("div").on("click", function(){
+    var classArr = ($(this).closest("div").attr("class")).split(" ");
+    var state = classArr.filter(function(cls){
+      return (cls === "off");
+    });
+    if (state.length === 1){
+      adminToggle = true;
+      $("#add-form").show()
+      $("#update-form").hide()
+
+    }
+    else{
+      // Update
+      $("#add-form").hide()
+      $("#update-form").show()
+    }
+
+
+  })
+
 
 // replace hasKannah with ajax calls to DB
 
@@ -11,14 +39,6 @@ $(document).on("ready", function(){
   // ----- Admin Locations Map -------- //
   // ----------------------------------//
 
-
-    // $(".admin-toggle").show();
-    // $(".find-beer-toggle").hide();
-
-    // // close modal on click
-    // $(".close").on("click", function(){
-    //   $(".admin-toggle").hide();
-    // });
 
     // create map and put on DOM
     var adminMap = new google.maps.Map(document.getElementById('admin-map'), {

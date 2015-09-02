@@ -14,22 +14,15 @@ body {
   background-size: 100%;
 }
 
-#main-logo {
-  border-radius: 25rem;
+#admin-toggle {
 }
 
-
-.btn-primary{
-  background-color: #BF2519;
+input {
+  margin: 3rem 0;
 }
 
-.btn-primary:hover {
-  background-color: #880D03;
-}
-
-.btn-primary:focus{
-  background-color: #880D03;
-
+#update-form {
+  display: none;
 }
 
 .big-btn {
