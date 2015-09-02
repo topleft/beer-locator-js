@@ -25,7 +25,8 @@
 
   <div class="row">
     <div class="col-md-4">
-  <input id="admin-toggle" type="checkbox" name="my-checkbox" checked data-toggle="toggle" data-on="Add" data-off="Update" data-onstyle="warning" data-offstyle="info" data-width="100%" data-height="50">
+  <input id="admin-toggle" type="checkbox" name="my-checkbox" checked data-toggle="toggle" data-on="Add" data-off="Update" data-onstyle="warning" data-offstyle="primary" data-width="100%" data-height="50">
+
       <form class="form" id="add-form">
         <div class="form-group">
           <div class="panel panel-default">
@@ -34,7 +35,7 @@
                 <input id="admin-type-input" class="controls form-control" type="text" placeholder="enter type...">
                 <div class="checkbox">
                   <label>
-                    <input type="checkbox"> Active
+                    <input id="checkbox" type="checkbox"> Active
                   </label>
                 </div>
                 <button id="add-location" type="submit" class="btn btn-primary">Add Location</button>
@@ -54,8 +55,8 @@
                     <input type="checkbox"> Active
                   </label>
                 </div>
-                <button id="add-location" type="submit" class="btn btn-default btn-info">Update</button>
-                <button id="add-location" type="submit" class="btn btn-default btn-danger">Delete</button>
+                <button id="update-location" type="submit" class="btn btn-default btn-primary">Update</button>
+                <button id="delete-location" type="submit" class="btn btn-default btn-danger">Delete</button>
             </div>
           </div>
         </div>

@@ -5,7 +5,7 @@ $(document).on("ready", function(){
   var adminMap;
   var map;
   var adminToggle = true; // true is add, false is update/delete
-  $("#add-form").show()
+  $("#add-form").show();
 
   // ------------------------------------//
   // ----- Handle Toggle Admin -------- //
@@ -19,35 +19,89 @@ $(document).on("ready", function(){
     });
     if (state.length === 1){
       adminToggle = true;
-      $("#add-form").show()
-      $("#update-form").hide()
-
+      $("#add-form").show();
+      $("#update-form").hide();
     }
     else{
       // Update
-      $("#add-form").hide()
+      adminToggle = false;
+      $("#add-form").hide();
       $("#update-form").show()
     }
-
-
   })
 
 
 // replace hasKannah with ajax calls to DB
 
   // ------------------------------------//
-  // ----- Admin Locations Map -------- //
+  // ----- Admin Locations to DB ------ //
   // ----------------------------------//
 
+  var adminMap = new google.maps.Map(document.getElementById('admin-map'), {
+    center: {lat:39.393981, lng:-106.016311},
+    zoom: 7
+  });
 
-    // create map and put on DOM
-    var adminMap = new google.maps.Map(document.getElementById('admin-map'), {
-      center: {lat:39.393981, lng:-106.016311},
-      zoom: 7
+
+  // intitalize autocomplete on form intput
+    var $placeInput = document.getElementById('admin-place-input');
+    var autocomplete = new google.maps.places.Autocomplete($placeInput);
+    autocomplete.bindTo('bounds', adminMap);
+
+    var place;
+    autocomplete.addListener('place_changed', function() {
+      // infowindow.close();
+      place = autocomplete.getPlace();
     });
 
-  //   // grab form input element
-  //   var input = document.getElementById('admin-input');
+  $("#add-location").on("click", function(e){
+    e.preventDefault();
+    var $typeInput = $('#admin-type-input');
+    var $checkbox = $("#checkbox");
+    console.log(place.place_Id);
+
+    $.ajax({
+      method: "POST",
+      url: "/admin",
+      data: {
+        placeId: place.place_Id,
+        type: $typeInput.val(),//userinput
+        active: $checkbox.val()//user input
+      }
+    }).done(function(data){
+      console.log(data)
+      console.log("Success");
+      // clear input values
+      // $("#message").html("Success! Location added.")
+      // populate map with marker at new location
+
+    }).fail(function(){
+      console.log("Fail")
+      // show fail message
+
+    });
+
+
+    console.log(place, $typeInput, $checkbox);
+
+
+  });
+
+  $("#update-location").on("click", function(e){
+    e.preventDefault();
+  });
+  $("#delete-location").on("click", function(e){
+    e.preventDefault();
+    console.log("delete");
+  });
+
+    // create map and put on DOM
+    // create quiz/info sheet about kannah beers
+
+  //   // grab form input elements
+
+
+
   //   console.log(input);
   //   // intitalize autocomplete on form intput
   //   var autocomplete = new google.maps.places.Autocomplete(input);

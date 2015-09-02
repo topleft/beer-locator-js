@@ -1,3 +1,5 @@
+
+require("./database.js");
 // *** main dependencies *** //
 var express = require('express');
 var path = require('path');
@@ -10,6 +12,7 @@ var swig = require('swig');
 
 // *** routes *** //
 var routes = require('./routes/index.js');
+var admin_routes = require('./routes/admin-routes.js');
 
 
 // *** express instance *** //
@@ -36,6 +39,7 @@ app.use(express.static(path.join(__dirname, '../client/public')));
 
 // *** main routes *** //
 app.use('/', routes);
+app.use('/admin/', admin_routes);
 
 
 // catch 404 and forward to error handler

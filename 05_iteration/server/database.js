@@ -8,21 +8,24 @@ var Admin = new Schema({
   password: String
 });
 
-var Location = new Schema({
-  name: String, // place.name
-  placeId: String, // place._id
+var BeerLocation = new Schema({
+  placeId: String, // google place object
   type: String, // bar, restaruant, liquor store
   active: Boolean
-})
+});
 
 // Admin.plugin(passportLocalMongoose);
 
 var admin = mongoose.model('admins', Admin)
-var location = mongoose.model('locations', Location);
+var location = mongoose.model('locations', BeerLocation);
 
 module.exports = {
   admin: admin,
   location: location
 }
 
-mongoose.connect('mongodb://localhost/beer-locator-database');
+mongoose.connect('mongodb://localhost/beer-locator');
+
+
+
+
