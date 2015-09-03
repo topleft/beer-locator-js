@@ -17,11 +17,11 @@ var BeerLocation = new Schema({
 // Admin.plugin(passportLocalMongoose);
 
 var admin = mongoose.model('admins', Admin)
-var location = mongoose.model('locations', BeerLocation);
+var beerLocation = mongoose.model('locations', BeerLocation);
 
 module.exports = {
   admin: admin,
-  location: location
+  beerLocation: beerLocation
 }
 
 mongoose.connect('mongodb://localhost/beer-locator');

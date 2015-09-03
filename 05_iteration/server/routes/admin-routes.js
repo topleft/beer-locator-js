@@ -19,7 +19,7 @@ router.get('/', function(req, res, next) {
 
 router.post("/", function(req, res){
   console.log("in router");
-  var response = ute.handlePost(req.body.googlePlace, req.body.type, req.body.active);
+  var response = ute.handlePost(req.body.placeId, req.body.type, req.body.active);
   console.log(response);
   res.json(response);
 });

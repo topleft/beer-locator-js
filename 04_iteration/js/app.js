@@ -1,7 +1,7 @@
 $(document).on("ready", function(){
 
   // -- globals -- //
-  var hasKannah = []
+  var hasKannah = [];
   var adminMap;
   var map;
 

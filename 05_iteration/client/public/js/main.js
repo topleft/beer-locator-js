@@ -1,3 +1,8 @@
+// var cred = require("../../server/cred.js");
+
+// replace key with cred file key
+
+
 $(document).on("ready", function(){
   console.log("hello Pete");
 
@@ -58,33 +63,30 @@ $(document).on("ready", function(){
     e.preventDefault();
     var $typeInput = $('#admin-type-input');
     var $checkbox = $("#checkbox");
-    console.log(place.place_Id);
+    console.log("Id: "+place.place_id);
 
     $.ajax({
       method: "POST",
       url: "/admin",
       data: {
-        placeId: place.place_Id,
+        placeId: place.place_id,
         type: $typeInput.val(),//userinput
         active: $checkbox.val()//user input
       }
     }).done(function(data){
-      console.log(data)
       console.log("Success");
-      // clear input values
-      // $("#message").html("Success! Location added.")
+      $typeInput.val("")
+      $checkbox.val("")
+      // $("#message").html("Success! Location added.") // create div
       // populate map with marker at new location
-
+      console.log(data.placeId);
+      populateMap(data.placeId, adminMap);
     }).fail(function(){
-      console.log("Fail")
+      console.log("Fail");
       // show fail message
-
     });
 
-
-    console.log(place, $typeInput, $checkbox);
-
-
+//closes put "add" click
   });
 
   $("#update-location").on("click", function(e){
@@ -94,6 +96,69 @@ $(document).on("ready", function(){
     e.preventDefault();
     console.log("delete");
   });
+
+
+  // closes document on ready
+});
+
+var key = "AIzaSyB4TF76m8LYII0ZiMzzmOy9dP4M5KevyQo";
+var baseUrl = "http://maps.googleapis.com/maps/api/place/details/"
+
+// function getPlaceObject(placeId){
+//   $.ajax({
+//     method: "GET",
+//     url: baseUrl+"json?placeid="+placeId+"&="+key
+//   }).done(function(data){
+//     return data;
+//   }).fail(function(err){
+
+//   });
+// };
+
+
+
+function populateMap(id, map){
+  var request = {placeId: id};
+  var service = new google.maps.places.PlacesService(map);
+  service.getDetails(request, function (place, status) {
+    if (status == google.maps.places.PlacesServiceStatus.OK) {
+      // If the request succeeds, draw the place location on the map
+      // as a marker, and register an event to handle a click on the marker.
+      var marker = new google.maps.Marker({
+        map: map,
+        position: place.geometry.location
+      });
+      var infowindow = new google.maps.InfoWindow();
+      // fill in info window
+      infowindow.setContent('<div><strong>' + place.name + '</strong><br>' +
+        'Place ID: ' + place.formatted_address + '<br></div>');
+      // display info window
+      infowindow.open(map, marker);
+    };
+  });
+
+};
+
+// function getPlaceIds(){
+//   $.ajax({
+//     method: "GET",
+//     url: "/admin"
+//   }).done(function(data){
+//    var ids = data.filter(function(doc){
+//       return (doc.active);
+//     }).map(function(doc){
+//       return doc.placeId;
+//     })
+//     console.log(ids);
+//     return ids;
+//   }).fail(function(err){
+
+//   });
+// }
+
+
+
+
 
     // create map and put on DOM
     // create quiz/info sheet about kannah beers
@@ -313,7 +378,7 @@ $(document).on("ready", function(){
 
 
 // closes document on ready
-});
+//});
 
 
 
