@@ -2,20 +2,27 @@ var db = require("../database.js");
 
 
 function handleGet(cb){
+  // console.log("in ute");
   db.beerLocation.find({}, function(err, items) {
     if (err) throw err;
+    // console.log("items :"+items)
     return cb(items);
   });
 };
 
+function handleGetOne(id, cb){
+  db.beerLocation.find({placeId: id}, function(err, item) {
+    if (err) throw err;
+    return cb(item);
+  });
+};
+
 function handlePost(place, type, active){
-  console.log("in ute");
   newLocation = new db.beerLocation({placeId: place,
                                   type: type,
                                   active: active
                                  });
 
-  console.log(newLocation);
   newLocation.save(function(err) {
     if (err) throw err;
     });
@@ -44,9 +51,11 @@ function handleDelete(currentId){
 
 module.exports = {
   handleGet: handleGet,
+  handleGetOne: handleGetOne,
   handleDelete: handleDelete,
   handlePost: handlePost,
   handlePut: handlePut
+
 }
 
 

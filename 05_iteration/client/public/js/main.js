@@ -59,192 +59,102 @@ $(document).on("ready", function(){
       place = autocomplete.getPlace();
     });
 
-  $("#add-location").on("click", function(e){
-    e.preventDefault();
-    var $typeInput = $('#admin-type-input');
-    var $checkbox = $("#checkbox");
-    console.log("Id: "+place.place_id);
+    $("#add-location").on("click", function(e){
+      e.preventDefault();
+      var $typeInput = $('#admin-type-input');
+      var $checkbox = $("#checkbox");
+      console.log("Id: "+place.place_id);
 
-    $.ajax({
-      method: "POST",
-      url: "/admin",
-      data: {
-        placeId: place.place_id,
-        type: $typeInput.val(),//userinput
-        active: $checkbox.val()//user input
-      }
-    }).done(function(data){
-      console.log("Success");
-      $typeInput.val("")
-      $checkbox.val("")
-      // $("#message").html("Success! Location added.") // create div
-      // populate map with marker at new location
-      console.log(data.placeId);
-      populateMap(data.placeId, adminMap);
-    }).fail(function(){
-      console.log("Fail");
-      // show fail message
+      $.ajax({
+        method: "POST",
+        url: "/admin",
+        data: {
+          placeId: place.place_id,
+          type: $typeInput.val(),//userinput
+          active: $checkbox.val()//user input
+        }
+      }).done(function(data){
+        console.log("Success");
+        $typeInput.val("")
+        $checkbox.val("")
+        // $("#message").html("Success! Location added.") // create div
+        populateMap(data.placeId, adminMap);
+      }).fail(function(){
+        console.log("Fail");
+        // show fail message
+      });
+
+  //closes out "add" click
     });
 
-//closes put "add" click
-  });
+    $("#update-location").on("click", function(e){
+      e.preventDefault();
+    });
+    $("#delete-location").on("click", function(e){
+      e.preventDefault();
+      console.log("delete");
+    });
 
-  $("#update-location").on("click", function(e){
-    e.preventDefault();
-  });
-  $("#delete-location").on("click", function(e){
-    e.preventDefault();
-    console.log("delete");
-  });
-
-
+    $("#show-locations").on("click", function(){
+      console.log("show all");
+      getPlaceIds(adminMap);
+    });
   // closes document on ready
 });
 
-var key = "AIzaSyB4TF76m8LYII0ZiMzzmOy9dP4M5KevyQo";
-var baseUrl = "http://maps.googleapis.com/maps/api/place/details/"
+function showAllLocations(map, cb){
+  getPlaceIds(function(){
+    cb();
+  });
+}
 
-// function getPlaceObject(placeId){
-//   $.ajax({
-//     method: "GET",
-//     url: baseUrl+"json?placeid="+placeId+"&="+key
-//   }).done(function(data){
-//     return data;
-//   }).fail(function(err){
-
-//   });
-// };
-
+  // idsFunction.forEach(function(id){
+  //   cb(id, map);
 
 
 function populateMap(id, map){
+  console.log("in pop: "+map)
   var request = {placeId: id};
   var service = new google.maps.places.PlacesService(map);
   service.getDetails(request, function (place, status) {
     if (status == google.maps.places.PlacesServiceStatus.OK) {
-      // If the request succeeds, draw the place location on the map
-      // as a marker, and register an event to handle a click on the marker.
       var marker = new google.maps.Marker({
         map: map,
         position: place.geometry.location
       });
       var infowindow = new google.maps.InfoWindow();
-      // fill in info window
-      infowindow.setContent('<div><strong>' + place.name + '</strong><br>' +
-        'Place ID: ' + place.formatted_address + '<br></div>');
-      // display info window
+      infowindow.setContent('<div><strong>' + place.name + '</strong><br>' + place.formatted_address + '<br></div>');
       infowindow.open(map, marker);
     };
   });
-
 };
 
-// function getPlaceIds(){
-//   $.ajax({
-//     method: "GET",
-//     url: "/admin"
-//   }).done(function(data){
-//    var ids = data.filter(function(doc){
-//       return (doc.active);
-//     }).map(function(doc){
-//       return doc.placeId;
-//     })
-//     console.log(ids);
-//     return ids;
-//   }).fail(function(err){
+function getPlaceIds(map){
+  $.ajax({
+    method: "GET",
+    url: "/admin/hasKannah"
+  }).done(function(data){
+    console.log(data);
+    for (var i = 0; i < data.length; i++) {
+      console.log("One Id: "+data[i].placeId)
+      populateMap(data[i].placeId, map)
+    };
+    // return ids;
+  }).fail(function(err){
+    console.log(err)
+  });
+}
 
-//   });
-// }
-
-
-
-
-
-    // create map and put on DOM
-    // create quiz/info sheet about kannah beers
-
-  //   // grab form input elements
-
-
-
-  //   console.log(input);
-  //   // intitalize autocomplete on form intput
-  //   var autocomplete = new google.maps.places.Autocomplete(input);
-  //   autocomplete.bindTo('bounds', adminMap);
-
-  //   // instantiate info window
-  //   var infowindow = new google.maps.InfoWindow();
-
-  //   // instantiate new marker specific to admin map
-  //   var marker = new google.maps.Marker({
-  //     map: adminMap
-  //   });
-
-  //   // create scoped 'place' variable
-  //   var place;
-
-  //   // listen for change in form input, assign value to place variable
-  //   autocomplete.addListener('place_changed', function() {
-  //     infowindow.close();
-  //     place = autocomplete.getPlace();
-  //   });
-
-  //   // listen for user clicking button or hitting enter on keyboard
-  //   $(".admin-toggle form").on("submit", function(e){
-  //     e.preventDefault();
-  //     $("#admin-input").val("");
-  //     // check to see if place object has a location
-  //     if (!place.geometry) {
-  //       return;
-  //     }
-  //     // check to see is that location is inside the current map view
-  //     if (place.geometry.viewport) {
-  //       adminMap.fitBounds(place.geometry.viewport);
-  //     // if not move the map view and make the place the center
-  //     } else {
-  //       adminMap.setCenter(place.geometry.location);
-  //       adminMap.setZoom(17);
-  //     }
-
-  //     // Set the position of the marker using the place ID and location.
-  //     marker.setPlace({
-  //       placeId: place.place_id,
-  //       location: place.geometry.location
-  //     });
-
-  //     //make marker visible on map
-  //     marker.setVisible(true);
-
-  //     // fill in info window
-  //     infowindow.setContent('<div><strong>' + place.name + '</strong><br>' +
-  //         'Place ID: ' + place.place_id + '<br>' +
-  //         place.formatted_address);
-
-  //     // display info window
-  //     infowindow.open(adminMap, marker);
-
-
-  //     // hasKannah.push({"name":place.name, "placeId": place.place_id})
-
-  //     // add places to database for use in beer maps
-  //     // $.ajax({
-  //     //   method: "POST",
-  //     //   url: //route
-  //     //   data: {
-  //     //     name: place.name,
-  //     //     placeId: place.place_id,
-  //     //     type: ,//userinput
-  //     //     active: //user input
-  //     //   }
-  //     // }).done(function(data) {
-
-  //     // }).fail(function(err) {
-
-  //     // });
-
-
-  //   });
-
+function getOnePlaceDoc(id){
+  $.ajax({
+    method: "GET",
+    url: "admin/hasKannah/"+id
+  }).done(function(data){
+    return data[0];
+  }).fail(function(err){
+    console.log(err);
+  });
+}
 
 
 
@@ -382,3 +292,16 @@ function populateMap(id, map){
 
 
 
+// var key = "AIzaSyB4TF76m8LYII0ZiMzzmOy9dP4M5KevyQo";
+// var baseUrl = "http://maps.googleapis.com/maps/api/place/details/"
+
+// function getPlaceObject(placeId){
+//   $.ajax({
+//     method: "GET",
+//     url: baseUrl+"json?placeid="+placeId+"&="+key
+//   }).done(function(data){
+//     return data;
+//   }).fail(function(err){
+
+//   });
+// };

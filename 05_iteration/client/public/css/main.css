@@ -14,7 +14,12 @@ body {
   background-size: 100%;
 }
 
-#admin-toggle {
+.toggle {
+  margin-bottom: 2rem;
+}
+
+.toggle-handle{
+  width: 8rem;
 }
 
 input {

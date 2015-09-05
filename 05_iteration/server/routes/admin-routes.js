@@ -7,14 +7,22 @@ var ute = require("../logic/utility.js");
 
 
 router.get('/', function(req, res, next) {
+
   res.render('admin', { title: 'Kannah Creek Brewing Co.' });
 });
 
-// router.get('/', function(req, res, next) {
-//   ute.handleGet(function(err,data){
-//     res.json(data);
-//   });
-// });
+router.get('/hasKannah', function(req, res, next) {
+  ute.handleGet(function(data){
+    console.log(data);
+    res.json(data);
+  });
+});
+
+router.get('/hasKannah/:placeId', function(req, res, next) {
+  ute.handleGetOne(req.params.placeId, function(data){
+    res.json(data);
+  });
+});
 
 
 router.post("/", function(req, res){
