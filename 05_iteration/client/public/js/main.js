@@ -91,13 +91,21 @@ $(document).on("ready", function(){
       var id = $("#placeId").html();
       getOnePlaceAndUpdate(id);
     });
+
     $("#delete-location").on("click", function(e){
       e.preventDefault();
       console.log("delete");
+      var id = $("#placeId").html();
+      deleteOnePlaceDoc(id, function(){
+        alert("Location deleted.");
+        clearMarkers(markers);
+        markers = [];
+        locationsShown = false;
+        showAllLocations(adminMap, markers);
+      })
     });
 
     $("#show-locations").on("click", function(){
-      console.log("click: "+ locationsShown);
       showAllLocations(adminMap, markers);
     });
 
@@ -107,7 +115,8 @@ $(document).on("ready", function(){
     $("#checkbox-update").on("click", function(){
       console.log("hello");
     })
-// clear markers from map
+
+
 function setMapOnAll(map, markers){
   console.log("in set: "+markers);
   for (var i = 0; i < markers.length; i++) {
@@ -115,14 +124,12 @@ function setMapOnAll(map, markers){
   }
 }
 
-function clearMarkers(){
-  setMapOnAll(null);
+function clearMarkers(markers){
+  locationsShown = false;
+  console.log(locationsShown);
+  setMapOnAll(null, markers);
 }
 
-function deleteMarkers(){
-  clearMarkers();
-  markers = [];
-}
 
 
 
@@ -190,10 +197,24 @@ function getOnePlaceDoc(id, cb){
   });
 }
 
+function deleteOnePlaceDoc(id, cb){
+  $.ajax({
+    method: "DELETE",
+    url: "admin/hasKannah/"+id,
+    data: {
+      placeId: id
+    }
+  }).done(function(data){
+    cb(data);
+  }).fail(function(err){
+    console.log(err);
+  });
+}
+
 function getOnePlaceAndUpdate(id){
   var $typeInput = $('#admin-type-update');
   var $checkbox = $("#checkbox-update");
-  console.log("box: "+$checkbox.prop("checked"));
+
   $.ajax({
     method: "PUT",
     url: "admin/hasKannah/"+id,

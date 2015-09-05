@@ -41,11 +41,11 @@ function handlePut(id, update, option, cb){
 }
 
 // accepts a Number
-function handleDelete(currentId){
-  db.beerLocation.remove({_id: currentId}, function(err){
+function handleDelete(currentId, cb){
+  db.beerLocation.remove({placeId: currentId}, function(err){
     if(err) throw err;
   });
-  return {message: "Location removed."};
+  return cb({message: "Location removed."});
 };
 
 

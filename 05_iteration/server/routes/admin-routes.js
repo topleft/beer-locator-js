@@ -11,6 +11,13 @@ router.get('/', function(req, res, next) {
   res.render('admin', { title: 'Kannah Creek Brewing Co.' });
 });
 
+router.post("/", function(req, res){
+  console.log("in router");
+  var response = ute.handlePost(req.body.placeId, req.body.type, req.body.active);
+  console.log(response);
+  res.json(response);
+});
+
 router.get('/hasKannah', function(req, res, next) {
   ute.handleGet(function(data){
     console.log(data);
@@ -24,13 +31,6 @@ router.get('/hasKannah/:placeId', function(req, res, next) {
   });
 });
 
-router.post("/", function(req, res){
-  console.log("in router");
-  var response = ute.handlePost(req.body.placeId, req.body.type, req.body.active);
-  console.log(response);
-  res.json(response);
-});
-
 router.put("/hasKannah/:id", function(req, res){
   var query = {placeId: req.params.id};
   var update = {type: req.body.category, active: req.body.active};
@@ -41,10 +41,11 @@ router.put("/hasKannah/:id", function(req, res){
 });
 
 
-router.delete('/:id', function(req, res){
-  var response = ute.handleDelete(req.params.id);
-  console.log(response)
-  res.json(response)
+router.delete('/hasKannah/:id', function(req, res){
+  ute.handleDelete(req.params.id, function(response){
+    console.log(response);
+    res.json(response);
+  });
 });
 
 
