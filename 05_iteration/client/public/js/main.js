@@ -63,6 +63,7 @@ $(document).on("ready", function(){
 
   $("#add-location").on("click", function(e){
     e.preventDefault();
+    var $nameInput = $('#admin-place-input');
     var $typeInput = $('#admin-type-input');
     var $checkbox = $("#checkbox");
 
@@ -76,6 +77,7 @@ $(document).on("ready", function(){
       }
     }).done(function(data){
       console.log("Success");
+      $nameInput.val("");
       $typeInput.val("");
       $checkbox.val("");
       addMarker(data.placeId, adminMap, markers);
@@ -89,6 +91,7 @@ $(document).on("ready", function(){
     $("#update-location").on("click", function(e){
       e.preventDefault();
       var id = $("#placeId").html();
+      clearUpdateValues();
       getOnePlaceAndUpdate(id);
     });
 
@@ -98,6 +101,7 @@ $(document).on("ready", function(){
       var id = $("#placeId").html();
       deleteOnePlaceDoc(id, function(){
         alert("Location deleted.");
+        clearUpdateValues();
         clearMarkers(markers);
         markers = [];
         locationsShown = false;
@@ -116,6 +120,12 @@ $(document).on("ready", function(){
       console.log("hello");
     })
 
+
+function clearUpdateValues(){
+  $('#admin-place-update').val("");
+  $('#admin-type-update').val("");
+  $("#placeId").html("");
+}
 
 function setMapOnAll(map, markers){
   console.log("in set: "+markers);
