@@ -11,6 +11,7 @@ $(document).on("ready", function(){
 
   var adminMap;
   var map;
+  var place;
   var markers = [];
   $("#add-form").show();
 
@@ -51,43 +52,39 @@ $(document).on("ready", function(){
 
 
   // intitalize autocomplete on form intput
-    var $placeInput = document.getElementById('admin-place-input');
-    var autocomplete = new google.maps.places.Autocomplete($placeInput);
-    autocomplete.bindTo('bounds', adminMap);
+  var $placeInput = document.getElementById('admin-place-input');
+  var autocomplete = new google.maps.places.Autocomplete($placeInput);
+  autocomplete.bindTo('bounds', adminMap);
 
-    var place;
-    autocomplete.addListener('place_changed', function() {
-      // infowindow.close();
-      place = autocomplete.getPlace();
+  autocomplete.addListener('place_changed', function() {
+    place = autocomplete.getPlace();
+    $('#admin-type-input').val(place.types[0]);
+  });
+
+  $("#add-location").on("click", function(e){
+    e.preventDefault();
+    var $typeInput = $('#admin-type-input');
+    var $checkbox = $("#checkbox");
+
+    $.ajax({
+      method: "POST",
+      url: "/admin",
+      data: {
+        placeId: place.place_id,
+        type: $typeInput.val(),
+        active: $checkbox.prop("checked")//user input
+      }
+    }).done(function(data){
+      console.log("Success");
+      $typeInput.val("");
+      $checkbox.val("");
+      addMarker(data.placeId, adminMap, markers);
+    }).fail(function(){
+      console.log("Fail");
+      alert("Location not added. Please try again.");
     });
-
-    $("#add-location").on("click", function(e){
-      e.preventDefault();
-      var $typeInput = $('#admin-type-input');
-      var $checkbox = $("#checkbox");
-
-      $.ajax({
-        method: "POST",
-        url: "/admin",
-        data: {
-          placeId: place.place_id,
-          type: $typeInput.val(),//userinput
-          active: $checkbox.prop("checked")//user input
-        }
-      }).done(function(data){
-        console.log("Success");
-        $typeInput.val("")
-        $checkbox.val("")
-        // $("#message").html("Success! Location added.") // create div
-        console.log(markers);
-        addMarker(data.placeId, adminMap, markers);
-      }).fail(function(){
-        console.log("Fail");
-        // show fail message
-      });
-
-  //closes out "add" click
-    });
+//closes out "add" click
+  });
 
     $("#update-location").on("click", function(e){
       e.preventDefault();
@@ -156,7 +153,7 @@ function addMarker(id, map, markers){
       });
       infowindow = new google.maps.InfoWindow();
       infowindow.setContent('<div><strong>' + place.name + '</strong><br>' + place.formatted_address + '<br></div>');
-      infowindow.open(map, marker);
+      // infowindsow.open(map, marker);
     }
   });
 }
