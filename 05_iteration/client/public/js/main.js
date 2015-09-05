@@ -2,13 +2,15 @@
 
 // replace key with cred file key
 
+  // -- globals -- //
+  var locationsShown = false;
 
 $(document).on("ready", function(){
   console.log("hello Pete");
 
-  // -- globals -- //
   var adminMap;
   var map;
+  var markers = [];
   var adminToggle = true; // true is add, false is update/delete
   $("#add-form").show();
 
@@ -63,7 +65,6 @@ $(document).on("ready", function(){
       e.preventDefault();
       var $typeInput = $('#admin-type-input');
       var $checkbox = $("#checkbox");
-      console.log("Id: "+place.place_id);
 
       $.ajax({
         method: "POST",
@@ -78,7 +79,8 @@ $(document).on("ready", function(){
         $typeInput.val("")
         $checkbox.val("")
         // $("#message").html("Success! Location added.") // create div
-        populateMap(data.placeId, adminMap);
+        console.log(markers);
+        addMarker(data.placeId, adminMap, adminToggle, markers);
       }).fail(function(){
         console.log("Fail");
         // show fail message
@@ -96,18 +98,36 @@ $(document).on("ready", function(){
     });
 
     $("#show-locations").on("click", function(){
-      console.log("show all");
-      showAllLocations(adminMap);
+      console.log("click: "+ locationsShown)
+      showAllLocations(adminMap, adminToggle, markers);
     });
 
   // closes document on ready
 });
 
+// clear markers from map
+function setMapOnAll(map, markers){
+  console.log("in set: "+markers)
+  for (var i = 0; i < markers.length; i++) {
+    markers[i].setMap(map);
+  };
+}
+
+function clearMarkers(){
+  setMapOnAll(null);
+}
+
+function deleteMarkers(){
+  clearMarkers();
+  markers = [];
+}
 
 
-function populateMap(id, map){
-  console.log("in pop: "+map)
+
+function addMarker(id, map, adminToggle, markers){
+  console.log("in pop: "+markers);
   var request = {placeId: id};
+  var tog = adminToggle;
   var service = new google.maps.places.PlacesService(map);
   service.getDetails(request, function (place, status) {
     if (status == google.maps.places.PlacesServiceStatus.OK) {
@@ -115,6 +135,13 @@ function populateMap(id, map){
         map: map,
         position: place.geometry.location
       });
+      markers.push(marker);
+      marker.addListener("click", function(){
+        //infowindow toggle?
+          console.log(tog);
+        if (adminToggle === false){
+        }
+      })
       var infowindow = new google.maps.InfoWindow();
       infowindow.setContent('<div><strong>' + place.name + '</strong><br>' + place.formatted_address + '<br></div>');
       infowindow.open(map, marker);
@@ -122,19 +149,25 @@ function populateMap(id, map){
   });
 };
 
-function showAllLocations(map){
-  $.ajax({
-    method: "GET",
-    url: "/admin/hasKannah"
-  }).done(function(data){
-    console.log(data);
-    for (var i = 0; i < data.length; i++) {
-      console.log("One Id: "+data[i].placeId)
-      populateMap(data[i].placeId, map)
-    };
-  }).fail(function(err){
-    console.log(err)
-  });
+function showAllLocations(map, adminToggle, markers){
+  // console.log("in showAll: "+locationsShown)
+  if (locationsShown) {
+    setMapOnAll(map, markers);
+  }
+  else {
+    $.ajax({
+      method: "GET",
+      url: "/admin/hasKannah"
+    }).done(function(data){
+      for (var i = 0; i < data.length; i++) {
+        addMarker(data[i].placeId, map, adminToggle, markers)
+      };
+      locationsShown = true;
+    }).fail(function(err){
+      console.log(err)
+    });
+    locationsShown = true;
+  }
 }
 
 function getOnePlaceDoc(id){
