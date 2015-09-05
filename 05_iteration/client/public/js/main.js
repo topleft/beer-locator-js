@@ -4,6 +4,7 @@
 
   // -- globals -- //
   var locationsShown = false;
+  var adminToggle = true; // true is add, false is update/delete
 
 $(document).on("ready", function(){
   console.log("hello Pete");
@@ -11,7 +12,6 @@ $(document).on("ready", function(){
   var adminMap;
   var map;
   var markers = [];
-  var adminToggle = true; // true is add, false is update/delete
   $("#add-form").show();
 
   // ------------------------------------//
@@ -33,9 +33,9 @@ $(document).on("ready", function(){
       // Update
       adminToggle = false;
       $("#add-form").hide();
-      $("#update-form").show()
+      $("#update-form").show();
     }
-  })
+  });
 
 
 // replace hasKannah with ajax calls to DB
@@ -80,7 +80,7 @@ $(document).on("ready", function(){
         $checkbox.val("")
         // $("#message").html("Success! Location added.") // create div
         console.log(markers);
-        addMarker(data.placeId, adminMap, adminToggle, markers);
+        addMarker(data.placeId, adminMap, markers);
       }).fail(function(){
         console.log("Fail");
         // show fail message
@@ -98,8 +98,8 @@ $(document).on("ready", function(){
     });
 
     $("#show-locations").on("click", function(){
-      console.log("click: "+ locationsShown)
-      showAllLocations(adminMap, adminToggle, markers);
+      console.log("click: "+ locationsShown);
+      showAllLocations(adminMap, markers);
     });
 
   // closes document on ready
@@ -107,10 +107,10 @@ $(document).on("ready", function(){
 
 // clear markers from map
 function setMapOnAll(map, markers){
-  console.log("in set: "+markers)
+  console.log("in set: "+markers);
   for (var i = 0; i < markers.length; i++) {
     markers[i].setMap(map);
-  };
+  }
 }
 
 function clearMarkers(){
@@ -124,10 +124,9 @@ function deleteMarkers(){
 
 
 
-function addMarker(id, map, adminToggle, markers){
-  console.log("in pop: "+markers);
+function addMarker(id, map, markers){
+  var infowindow;
   var request = {placeId: id};
-  var tog = adminToggle;
   var service = new google.maps.places.PlacesService(map);
   service.getDetails(request, function (place, status) {
     if (status == google.maps.places.PlacesServiceStatus.OK) {
@@ -137,20 +136,24 @@ function addMarker(id, map, adminToggle, markers){
       });
       markers.push(marker);
       marker.addListener("click", function(){
-        //infowindow toggle?
-          console.log(tog);
-        if (adminToggle === false){
+        if (infowindow && adminToggle){
+          infowindow.open(map, this)
         }
-      })
-      var infowindow = new google.maps.InfoWindow();
+        if (!adminToggle){
+          console.log($("#admin-place-update"))
+          // getOnePlaceDoc(place.place_id)
+          $("#admin-place-update").val(place.name);
+          $("#admin-type-update").val(place.types[0]);
+        }
+      });
+      infowindow = new google.maps.InfoWindow();
       infowindow.setContent('<div><strong>' + place.name + '</strong><br>' + place.formatted_address + '<br></div>');
       infowindow.open(map, marker);
-    };
+    }
   });
-};
+}
 
-function showAllLocations(map, adminToggle, markers){
-  // console.log("in showAll: "+locationsShown)
+function showAllLocations(map, markers){
   if (locationsShown) {
     setMapOnAll(map, markers);
   }
@@ -160,11 +163,10 @@ function showAllLocations(map, adminToggle, markers){
       url: "/admin/hasKannah"
     }).done(function(data){
       for (var i = 0; i < data.length; i++) {
-        addMarker(data[i].placeId, map, adminToggle, markers)
+        addMarker(data[i].placeId, map, markers)
       };
-      locationsShown = true;
     }).fail(function(err){
-      console.log(err)
+      console.log(err);
     });
     locationsShown = true;
   }
