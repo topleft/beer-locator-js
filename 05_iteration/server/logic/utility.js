@@ -17,11 +17,14 @@ function handleGetOne(id, cb){
   });
 };
 
+
 function handlePost(place, type, active){
-  newLocation = new db.beerLocation({placeId: place,
-                                  type: type,
-                                  active: active
-                                 });
+  newLocation =
+    new db.beerLocation(
+      {placeId: place,
+       type: type,
+       active: active
+        });
 
   newLocation.save(function(err) {
     if (err) throw err;

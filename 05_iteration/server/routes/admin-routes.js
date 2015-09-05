@@ -24,7 +24,6 @@ router.get('/hasKannah/:placeId', function(req, res, next) {
   });
 });
 
-
 router.post("/", function(req, res){
   console.log("in router");
   var response = ute.handlePost(req.body.placeId, req.body.type, req.body.active);
@@ -32,9 +31,9 @@ router.post("/", function(req, res){
   res.json(response);
 });
 
-router.put("/:id", function(req, res){
-  var query = {"_id": req.params.id};
-  var update = {category: req.body.category};
+router.put("/hasKannah/:id", function(req, res){
+  var query = {placeId: req.params.id};
+  var update = {type: req.body.category, active: req.body.active};
   var option = {new: true};
   ute.handlePut(query, update, option, function(item){
     res.json(item);

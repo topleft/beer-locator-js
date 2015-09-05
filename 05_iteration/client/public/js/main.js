@@ -72,7 +72,7 @@ $(document).on("ready", function(){
         data: {
           placeId: place.place_id,
           type: $typeInput.val(),//userinput
-          active: $checkbox.val()//user input
+          active: $checkbox.prop("checked")//user input
         }
       }).done(function(data){
         console.log("Success");
@@ -91,6 +91,8 @@ $(document).on("ready", function(){
 
     $("#update-location").on("click", function(e){
       e.preventDefault();
+      var id = $("#placeId").html();
+      getOnePlaceAndUpdate(id);
     });
     $("#delete-location").on("click", function(e){
       e.preventDefault();
@@ -105,6 +107,9 @@ $(document).on("ready", function(){
   // closes document on ready
 });
 
+    $("#checkbox-update").on("click", function(){
+      console.log("hello");
+    })
 // clear markers from map
 function setMapOnAll(map, markers){
   console.log("in set: "+markers);
@@ -140,10 +145,13 @@ function addMarker(id, map, markers){
           infowindow.open(map, this)
         }
         if (!adminToggle){
-          console.log($("#admin-place-update"))
-          // getOnePlaceDoc(place.place_id)
           $("#admin-place-update").val(place.name);
           $("#admin-type-update").val(place.types[0]);
+            getOnePlaceDoc(place.place_id, function(data){
+              // console.log(data[0].active)
+              $("#checkbox-update").prop("checked", data[0].active);//user input
+            })
+          $("#placeId").html(place.place_id)
         }
       });
       infowindow = new google.maps.InfoWindow();
@@ -172,12 +180,32 @@ function showAllLocations(map, markers){
   }
 }
 
-function getOnePlaceDoc(id){
+
+
+function getOnePlaceDoc(id, cb){
   $.ajax({
     method: "GET",
     url: "admin/hasKannah/"+id
   }).done(function(data){
-    return data[0];
+    cb(data);
+  }).fail(function(err){
+    console.log(err);
+  });
+}
+
+function getOnePlaceAndUpdate(id){
+  var $typeInput = $('#admin-type-update');
+  var $checkbox = $("#checkbox-update");
+  console.log("box: "+$checkbox.prop("checked"));
+  $.ajax({
+    method: "PUT",
+    url: "admin/hasKannah/"+id,
+    data: {
+          type: $typeInput.val(),//userinput
+          active: $checkbox.prop("checked")//user input
+        }
+  }).done(function(data){
+    console.log(data);
   }).fail(function(err){
     console.log(err);
   });
