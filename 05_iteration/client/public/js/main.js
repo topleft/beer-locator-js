@@ -97,19 +97,12 @@ $(document).on("ready", function(){
 
     $("#show-locations").on("click", function(){
       console.log("show all");
-      getPlaceIds(adminMap);
+      showAllLocations(adminMap);
     });
+
   // closes document on ready
 });
 
-function showAllLocations(map, cb){
-  getPlaceIds(function(){
-    cb();
-  });
-}
-
-  // idsFunction.forEach(function(id){
-  //   cb(id, map);
 
 
 function populateMap(id, map){
@@ -129,7 +122,7 @@ function populateMap(id, map){
   });
 };
 
-function getPlaceIds(map){
+function showAllLocations(map){
   $.ajax({
     method: "GET",
     url: "/admin/hasKannah"
@@ -139,7 +132,6 @@ function getPlaceIds(map){
       console.log("One Id: "+data[i].placeId)
       populateMap(data[i].placeId, map)
     };
-    // return ids;
   }).fail(function(err){
     console.log(err)
   });
